@@ -7,13 +7,14 @@ chatForm.addEventListener('submit',async (event) => {
     event.preventDefault();
     const token = localStorage.getItem('token');
     let message = {text:chatMessageInput.value};
-    const response = await axios.post("http://localhost:3000/user/chat",message,{headers: {'Authentication' :token}});
+    const response = await axios.post("http://localhost:3000/users/chat",message,{headers: {'Authentication' :token}});
     console.log(response);
     chatMessageInput.value = '';
   });
 
 window.addEventListener('load', ()=>{
   getusers();
+  getmessages();
 })
 
 async function getusers(){
@@ -27,10 +28,26 @@ async function getusers(){
     });
 }
 
-// Display chat messages
-const chatHistory = [{ sender: 'User 1', message: 'Hi' }, { sender: 'User 2', message: 'Hello' }]; // Replace with actual chat history from server
-chatHistory.forEach((chat) => {
-  const chatMessageElement = document.createElement('div');
-  chatMessageElement.textContent = `${chat.sender}: ${chat.message}`;
-  chatMessages.appendChild(chatMessageElement);
-});
+async function getmessages(){
+ const response = await axios.get("http://localhost:3000/users/chat");
+ console.log('response',response);
+ console.log(response.data.message);
+ chatHistory = response.data.message;
+  chatHistory.forEach((chat) => {
+    const chatMessageElement = document.createElement('div');
+    chatMessageElement.textContent = `${chat.userName}: ${chat.message}`;
+    chatMessages.appendChild(chatMessageElement);
+  });
+}
+
+// async function getmessages(){
+//   const response = await axios.get("http://localhost:4000/users/chat");
+//   console.log("response", response);
+//   console.log(response.data.message);
+//   const chatHistory = response.data.message;
+//   chatHistory.forEach((chat) => {
+//       const chatMessageElement = document.createElement('div');
+//       chatMessageElement.textContent = `${chat.signupName}: ${chat.message}`;
+//       chatMessages.appendChild(chatMessageElement);
+//   })
+//   }

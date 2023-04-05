@@ -11,10 +11,9 @@ async function login(event) {
              alert("User Succesfully logged in")
         }
         localStorage.setItem('token', response.data.token);
-        window.location.href = "../chat/chat.html"
+        window.location.href = '../chat/chat.html'
         }
     catch(err){
         document.body.innerHTML=`<div style="color:red;">${err}</div>`;
-  
     }
 }
